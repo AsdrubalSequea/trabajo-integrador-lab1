@@ -39,11 +39,11 @@ void accion_6(string turno, string jugador1, string jugador2, string corralJugad
 
 int verificador_de_indices();
 
-void verificador_de_orden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string &ganador, bool &finPartida);
+void verificador_de_orden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string &ganador, bool &finPartida, int &ordenJugador_1, int &ordenJugador_2, int ronda, int &gallina_suertuda_j1, int &gallina_suertuda_j2);
 
 int verificador_de_desorden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string ganador);
 
-int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int dado_1, int dado_2, int cartas_desordenadas, bool jugador_1_paso_turno, bool jugador_2_paso_turno, bool le_robaron_al_1, bool le_robaron_al_2);
+int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int dado_1, int dado_2, int cartas_desordenadas, bool jugador_1_paso_turno, bool jugador_2_paso_turno, bool le_robaron_al_1, bool le_robaron_al_2, int gallina_suertuda_j1, int gallina_suertuda_j2);
 
 void asignacion_maxima_puntuacion(int puntuacionFinal, string ganador, int &maximaPuntuacion, string &maximoGanador);
 
@@ -65,6 +65,11 @@ void inicioPartida(int &maximaPuntuacion, string &maximoGanador, string &jugador
     bool le_robaron_al_1 = false, le_robaron_al_2 = false; // verifica si a dicho jugador le robaron una carta
 
     iniciador_cartas_bloqueadas(cartas_bloqueadas_jugador1, cartas_bloqueadas_jugador2);
+
+    int ordenJugador_1 = 0;
+    int ordenJugador_2 = 0;
+
+    int gallina_suertuda_j1 = 0, gallina_suertuda_j2 = 0;
 
 
 
@@ -139,7 +144,7 @@ void inicioPartida(int &maximaPuntuacion, string &maximoGanador, string &jugador
 
             cout << "---------------------------------------------------------------------------------------" << endl;
 
-            verificador_de_orden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador, finPartida);
+            verificador_de_orden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador, finPartida, ordenJugador_1, ordenJugador_2, ronda, gallina_suertuda_j1, gallina_suertuda_j2);
 
 
 
@@ -177,7 +182,7 @@ void inicioPartida(int &maximaPuntuacion, string &maximoGanador, string &jugador
                 cout << endl;
 
 
-                verificador_de_orden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador, finPartida);
+                verificador_de_orden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador, finPartida, ordenJugador_1, ordenJugador_2, ronda, gallina_suertuda_j1, gallina_suertuda_j2);
 
 
                 if (!finPartida){
@@ -215,7 +220,7 @@ void inicioPartida(int &maximaPuntuacion, string &maximoGanador, string &jugador
                 cout << endl;
 
 
-                verificador_de_orden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador, finPartida);
+                verificador_de_orden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador, finPartida, ordenJugador_1, ordenJugador_2, ronda, gallina_suertuda_j1, gallina_suertuda_j2);
 
 
                 if (!finPartida){
@@ -247,7 +252,7 @@ void inicioPartida(int &maximaPuntuacion, string &maximoGanador, string &jugador
 
     cartas_desordenadas = verificador_de_desorden(jugador_1, jugador_2, corralJugador_1, corralJugador_2, CARTAS_POR_MANO, ganador);
 
-    puntuacionFinal = contador_de_puntos(ganador, jugador_1, jugador_2, dado_1, dado_2, cartas_desordenadas, jugador_1_paso_turno, jugador_2_paso_turno, le_robaron_al_1, le_robaron_al_2);
+    puntuacionFinal = contador_de_puntos(ganador, jugador_1, jugador_2, dado_1, dado_2, cartas_desordenadas, jugador_1_paso_turno, jugador_2_paso_turno, le_robaron_al_1, le_robaron_al_2, gallina_suertuda_j1, gallina_suertuda_j2);
 
     if (puntuacionFinal > maximaPuntuacion){
 
@@ -1095,15 +1100,16 @@ int verificador_de_indices(){
 /** verificador de orden de cada corral ------------------------------------------------------------------------------------------------------------------------*/
 
 
-void verificador_de_orden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string &ganador, bool &finPartida){
+void verificador_de_orden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string &ganador, bool &finPartida, int &ordenJugador_1, int &ordenJugador_2, int ronda, int &gallina_suertuda_j1, int &gallina_suertuda_j2){
 
     const string barajaDiamante[] = {"10 diamantes", "J diamantes", "Q diamantes", "K diamantes", "A diamantes"};
     const string barajaCorazon[] = {"10 corazones", "J corazones", "Q corazones", "K corazones", "A corazones"};
     const string barajaPicas[] = {"10 picas", "J picas", "Q picas", "K picas", "A picas"};
     const string barajaTrebol[] = {"10 trebol", "J trebol", "Q trebol", "K trebol", "A trebol"};
 
-    int ordenJugador_1 = 0;
-    int ordenJugador_2 = 0;
+    ordenJugador_1 = 0;
+    ordenJugador_2 = 0;
+
 
     for (int x = 0; x < CARTAS_POR_MANO; x++){
         if (corraljugador_1[x] == barajaDiamante[x] || corraljugador_1[x] == barajaCorazon[x]|| corraljugador_1[x] == barajaPicas[x] || corraljugador_1[x] == barajaTrebol[x]){
@@ -1133,6 +1139,14 @@ void verificador_de_orden(string jugador_1, string jugador_2, string corraljugad
         finPartida = true;
 
     }
+
+    if (ronda == 1){
+        gallina_suertuda_j1 = ordenJugador_1 * 5;
+        gallina_suertuda_j2 = ordenJugador_2 * 5;
+    }
+
+
+
 }
 
 
@@ -1174,7 +1188,7 @@ int verificador_de_desorden(string jugador_1, string jugador_2, string corraljug
 /** contador de puntos ------------------------------------------------------------------------------------------------------------------------*/
 
 
-int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int dado_1, int dado_2, int cartas_desordenadas, bool jugador_1_paso_turno, bool jugador_2_paso_turno, bool le_robaron_al_1, bool le_robaron_al_2){
+int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int dado_1, int dado_2, int cartas_desordenadas, bool jugador_1_paso_turno, bool jugador_2_paso_turno, bool le_robaron_al_1, bool le_robaron_al_2, int gallina_suertuda_j1, int gallina_suertuda_j2){
 
     int puntuacionFinal = 15;
 
@@ -1220,6 +1234,11 @@ int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int d
 
         }
 
+        puntuacionFinal += gallina_suertuda_j1;
+        cout << "GALLINA SUERTUDA: " << gallina_suertuda_j1/5 << "\t\t\t\t\t +" << gallina_suertuda_j1 << " PDV" << endl;
+
+
+
     } else {
 
         if (dado_2 == 3){
@@ -1229,7 +1248,7 @@ int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int d
             cout << "ROBO LA ULTIMA CARTA AL JUGADOR RIVAL: \t\t\t\t\t +0 PDV" << endl;
         }
 
-        puntuacionFinal += cartas_desordenadas;
+        puntuacionFinal += cartas_desordenadas * 5;
         cout << "CARTAS MAL UBICADAS DEL RIVAL x" << cartas_desordenadas << "\t\t\t\t\t+" << (cartas_desordenadas*5) << " PDV" << endl;
 
 
@@ -1249,6 +1268,9 @@ int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int d
             cout << "SIN HABER SUFRIDO UN ROBO DEL RIVAL: \t\t\t\t\t +0 PDV" << endl;
 
         }
+
+        puntuacionFinal += gallina_suertuda_j2;
+        cout << "GALLINA SUERTUDA: " << gallina_suertuda_j2/5 << "\t\t\t\t\t\t\t +" << gallina_suertuda_j2 << " PDV" << endl;
 
 
     }

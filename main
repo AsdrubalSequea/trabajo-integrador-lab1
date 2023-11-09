@@ -39,11 +39,11 @@ void accion_6(string turno, string jugador1, string jugador2, string corralJugad
 
 int verificador_de_indices();
 
-void verificador_de_orden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string &ganador, bool &finPartida);
+void verificador_de_orden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string &ganador, bool &finPartida, int &ordenJugador_1, int &ordenJugador_2, int ronda, int gallina_suertuda_j1, int gallina_suertuda_j2);
 
 int verificador_de_desorden(string jugador_1, string jugador_2, string corraljugador_1[], string corraljugador_2[], int CARTAS_POR_MANO, string ganador);
 
-int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int dado_1, int dado_2, int cartas_desordenadas, bool jugador_1_paso_turno, bool jugador_2_paso_turno, bool le_robaron_al_1, bool le_robaron_al_2);
+int contador_de_puntos(string ganador, string jugador_1, string jugador_2, int dado_1, int dado_2, int cartas_desordenadas, bool jugador_1_paso_turno, bool jugador_2_paso_turno, bool le_robaron_al_1, bool le_robaron_al_2, int gallina_suertuda_j1, int gallina_suertuda_j2);
 
 void asignacion_maxima_puntuacion(int puntuacionFinal, string ganador, int &maximaPuntuacion, string &maximoGanador);
 
@@ -148,4 +148,3 @@ int main() {
 
     return 0;
 }
-
